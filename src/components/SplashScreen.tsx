@@ -2,13 +2,19 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 /**
  * Splash Screen Cinématique
  * Apparaît à la première ouverture du site.
  */
 export default function SplashScreen({ children }: { children: React.ReactNode }) {
-  const [showSplash, setShowSplash] = useState(true);
+  const pathname = usePathname();
+  const validRoutes = ["/", "/carte", "/reservation"];
+  // Si la route n'est pas dans la liste, on est potentiellement sur une 404. On désactive le splash.
+  const is404 = !validRoutes.includes(pathname || "");
+
+  const [showSplash, setShowSplash] = useState(!is404);
 
   useEffect(() => {
     // Le splash dure 2.8 secondes puis on révèle le contenu
