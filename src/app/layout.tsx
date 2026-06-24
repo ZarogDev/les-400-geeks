@@ -20,7 +20,25 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: "Les 400 Geeks | Restaurant Gastronomique",
-  description: "L'épique s'invite à votre table. Découvrez une fusion unique entre la haute gastronomie et la culture vidéoludique.",
+  description: "L'épique s'invite à votre table. Découvrez une fusion unique entre la haute gastronomie et la culture vidéoludique. Réservez votre quête dès aujourd'hui.",
+  keywords: ["restaurant", "gastronomique", "geek", "gaming", "lyon", "paris", "fine dining", "jeux vidéo"],
+  authors: [{ name: "ZarogDev" }],
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    url: "https://les-400-geeks.vercel.app",
+    title: "Les 400 Geeks | Restaurant Gastronomique",
+    description: "La haute gastronomie rencontre la culture vidéoludique.",
+    siteName: "Les 400 Geeks",
+    images: [
+      {
+        url: "/images/hero.png",
+        width: 1200,
+        height: 630,
+        alt: "Les 400 Geeks",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

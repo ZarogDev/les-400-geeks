@@ -6,6 +6,12 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
+/**
+ * Composant de navigation principal (Navbar).
+ * Affiche le titre et un menu burger.
+ * Contient la logique d'affichage conditionnel du logo dans le menu ouvert.
+ * Gère le blocage du défilement lorsque le menu est ouvert.
+ */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);

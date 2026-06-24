@@ -1,86 +1,132 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, Feather } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Feather, BookOpen } from "lucide-react";
 import { GiDragonSpiral } from "react-icons/gi";
 
-const pagesContent = [
-  {
+/**
+ * Composant interactif Grimoire (Livre d'or 3D).
+ * Fetch les avis depuis la BDD SQLite et les affiche avec un système de pagination.
+ */
+export default function Grimoire() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Formulaire d'avis
+  const [author, setAuthor] = useState("");
+  const [content, setContent] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch("/api/reviews");
+      const data = await res.json();
+      setReviews(data);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchReviews();
+    }
+  }, [isOpen]);
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ author, content, rating: 5 }),
+      });
+      if (res.ok) {
+        setAuthor("");
+        setContent("");
+        await fetchReviews(); // Refresh
+        setCurrentPage(0); // Retour à la première page pour voir son avis
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Construction des pages
+  const pagesContent = [];
+
+  // Page de titre (0)
+  pagesContent.push({
     left: (
-      <div className="flex flex-col items-center justify-center h-full text-center">
+      <div className="flex flex-col items-center justify-center h-full text-center p-8">
         <h2 className="font-heading text-5xl md:text-7xl text-black mb-8">Le Grimoire<br/>des Quêtes</h2>
         <div className="w-24 h-[2px] bg-[#D4AF37] mb-8"></div>
         <p className="font-sans text-black/60 italic text-lg">Histoires, légendes et témoignages des aventuriers passés.</p>
       </div>
     ),
     right: (
-      <div className="flex flex-col h-full justify-center px-4 md:px-12">
-        <div className="flex gap-1 mb-6 text-[#D4AF37]">
-          {[...Array(5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
-        </div>
-        <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
-          "Une claque visuelle et gustative. Le 'Souffle de la Nature' m'a littéralement transporté dans les plaines d'Hyrule."
-        </p>
-        <p className="font-heading font-bold text-black uppercase tracking-widest">— Arthur L.</p>
-      </div>
-    )
-  },
-  {
-    left: (
-      <div className="flex flex-col h-full justify-center px-4 md:px-12">
-        <div className="flex gap-1 mb-6 text-[#D4AF37]">
-          {[...Array(5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
-        </div>
-        <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
-          "Un équilibre parfait entre le clin d'œil geek et la grande gastronomie. Le service est impeccable, digne d'un boss de fin."
-        </p>
-        <p className="font-heading font-bold text-black uppercase tracking-widest">— Sophie M.</p>
-      </div>
-    ),
-    right: (
-      <div className="flex flex-col h-full justify-center px-4 md:px-12">
-        <div className="flex gap-1 mb-6 text-[#D4AF37]">
-          {[...Array(5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
-        </div>
-        <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
-          "Le Cube de Compagnie en dessert... C'était presque un crève-cœur de le manger tellement il était parfait !"
-        </p>
-        <p className="font-heading font-bold text-black uppercase tracking-widest">— Julien D.</p>
-      </div>
-    )
-  },
-  {
-    left: (
       <div className="flex flex-col h-full justify-center px-4 md:px-12 text-center">
         <Feather size={56} className="mx-auto mb-8 text-[#D4AF37]" strokeWidth={1} />
         <h3 className="font-heading text-4xl text-black mb-4">Laissez votre trace</h3>
-        <p className="font-sans text-black/60 italic text-lg mb-8">Gravez votre expérience dans la légende et rejoignez la guilde.</p>
-      </div>
-    ),
-    right: (
-      <div className="flex flex-col h-full justify-center px-4 md:px-12">
-        <form className="flex flex-col gap-8" onSubmit={(e) => { e.preventDefault(); alert("Message ajouté au Grimoire !"); }}>
+        <p className="font-sans text-black/60 italic text-lg mb-8">Gravez votre expérience dans la légende.</p>
+        
+        <form className="flex flex-col gap-6 text-left" onSubmit={handleSubmitReview}>
           <div className="flex flex-col gap-2">
-            <label className="font-heading uppercase tracking-widest text-xs text-black/50">Nom du Joueur</label>
-            <input required type="text" className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors font-sans text-black text-lg" placeholder="Votre nom" />
+            <input required value={author} onChange={(e) => setAuthor(e.target.value)} type="text" className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors font-sans text-black text-lg" placeholder="Nom du Joueur" />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-heading uppercase tracking-widest text-xs text-black/50">Votre Message</label>
-            <textarea required rows={5} className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors resize-none font-sans text-black text-lg" placeholder="Racontez-nous votre aventure..."></textarea>
+            <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={3} className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors resize-none font-sans text-black text-lg" placeholder="Racontez-nous votre aventure..."></textarea>
           </div>
-          <button type="submit" className="mt-4 bg-black text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black py-4 font-heading uppercase tracking-widest transition-colors duration-500 w-full shadow-lg">
-            Signer le Grimoire
+          <button type="submit" disabled={isSubmitting} className="mt-2 bg-black text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black py-3 font-heading uppercase tracking-widest transition-colors duration-500 w-full shadow-lg disabled:opacity-50">
+            {isSubmitting ? "Gravure..." : "Signer le Grimoire"}
           </button>
         </form>
       </div>
     )
-  }
-];
+  });
 
-export default function Grimoire() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
+  // Pages d'avis (2 avis par double-page)
+  for (let i = 0; i < reviews.length; i += 2) {
+    const leftReview = reviews[i];
+    const rightReview = reviews[i + 1];
+
+    pagesContent.push({
+      left: (
+        <div className="flex flex-col h-full justify-center px-4 md:px-12">
+          <div className="flex gap-1 mb-6 text-[#D4AF37]">
+            {[...Array(leftReview.rating || 5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
+          </div>
+          <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
+            "{leftReview.content}"
+          </p>
+          <p className="font-heading font-bold text-black uppercase tracking-widest">— {leftReview.author}</p>
+        </div>
+      ),
+      right: rightReview ? (
+        <div className="flex flex-col h-full justify-center px-4 md:px-12">
+          <div className="flex gap-1 mb-6 text-[#D4AF37]">
+            {[...Array(rightReview.rating || 5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
+          </div>
+          <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
+            "{rightReview.content}"
+          </p>
+          <p className="font-heading font-bold text-black uppercase tracking-widest">— {rightReview.author}</p>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center h-full opacity-10">
+          <GiDragonSpiral size={150} />
+        </div>
+      )
+    });
+  }
 
   const next = () => {
     if (currentPage < pagesContent.length - 1) setCurrentPage(p => p + 1);
@@ -169,51 +215,59 @@ export default function Grimoire() {
               {/* Ombre de la reliure centrale */}
               <div className="absolute left-1/2 top-0 bottom-0 w-12 -ml-6 bg-gradient-to-r from-transparent via-black/10 to-transparent z-20 hidden md:block pointer-events-none" />
 
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentPage}
-                  initial={{ opacity: 0, rotateY: 30 }}
-                  animate={{ opacity: 1, rotateY: 0 }}
-                  exit={{ opacity: 0, rotateY: -30 }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="w-full h-full flex flex-col md:flex-row origin-left md:origin-center"
-                >
-                  {/* Page Gauche */}
-                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex flex-col">
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/5 to-transparent pointer-events-none hidden md:block" />
-                    {pagesContent[currentPage].left}
-                    <div className="absolute bottom-6 left-8 text-black/30 font-sans text-sm">{currentPage * 2 + 1}</div>
-                  </div>
+              {loading ? (
+                <div className="w-full h-full flex items-center justify-center font-heading text-2xl text-black/50">
+                  Déchiffrement des runes...
+                </div>
+              ) : (
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentPage}
+                    initial={{ opacity: 0, rotateY: 30 }}
+                    animate={{ opacity: 1, rotateY: 0 }}
+                    exit={{ opacity: 0, rotateY: -30 }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="w-full h-full flex flex-col md:flex-row origin-left md:origin-center"
+                  >
+                    {/* Page Gauche */}
+                    <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex flex-col">
+                      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-black/5 to-transparent pointer-events-none hidden md:block" />
+                      {pagesContent[currentPage]?.left}
+                      <div className="absolute bottom-6 left-8 text-black/30 font-sans text-sm">{currentPage * 2 + 1}</div>
+                    </div>
 
-                  {/* Séparation Mobile */}
-                  <div className="w-full h-[1px] bg-black/10 md:hidden" />
+                    {/* Séparation Mobile */}
+                    <div className="w-full h-[1px] bg-black/10 md:hidden" />
 
-                  {/* Page Droite */}
-                  <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex flex-col">
-                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/5 to-transparent pointer-events-none hidden md:block" />
-                    {pagesContent[currentPage].right}
-                    <div className="absolute bottom-6 right-8 text-black/30 font-sans text-sm">{currentPage * 2 + 2}</div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
+                    {/* Page Droite */}
+                    <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden flex flex-col">
+                      <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-black/5 to-transparent pointer-events-none hidden md:block" />
+                      {pagesContent[currentPage]?.right}
+                      <div className="absolute bottom-6 right-8 text-black/30 font-sans text-sm">{currentPage * 2 + 2}</div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              )}
 
               {/* Boutons de Navigation (Marque-pages) */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-8 z-30">
-                <button 
-                  onClick={prev} 
-                  disabled={currentPage === 0}
-                  className="p-3 bg-white hover:bg-[#D4AF37] hover:text-white rounded-full border border-black/10 text-black disabled:opacity-0 transition-all shadow-lg focus:outline-none"
-                >
-                  <ChevronLeft size={24} />
-                </button>
-                <button 
-                  onClick={next} 
-                  disabled={currentPage === pagesContent.length - 1}
-                  className="p-3 bg-white hover:bg-[#D4AF37] hover:text-white rounded-full border border-black/10 text-black disabled:opacity-0 transition-all shadow-lg focus:outline-none"
-                >
-                  <ChevronRight size={24} />
-                </button>
-              </div>
+              {!loading && (
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-8 z-30">
+                  <button 
+                    onClick={prev} 
+                    disabled={currentPage === 0}
+                    className="p-3 bg-white hover:bg-[#D4AF37] hover:text-white rounded-full border border-black/10 text-black disabled:opacity-0 transition-all shadow-lg focus:outline-none"
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+                  <button 
+                    onClick={next} 
+                    disabled={currentPage === pagesContent.length - 1}
+                    className="p-3 bg-white hover:bg-[#D4AF37] hover:text-white rounded-full border border-black/10 text-black disabled:opacity-0 transition-all shadow-lg focus:outline-none"
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </div>
+              )}
 
               {/* Bouton Fermer */}
               <button 
