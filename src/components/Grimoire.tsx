@@ -171,13 +171,12 @@ export default function Grimoire() {
               <div className="absolute right-0 top-1/2 -translate-y-1/2 w-6 h-24 md:w-8 md:h-32 bg-gradient-to-l from-[#4a3b20] to-[#8a6d3b] rounded-l-md border-y-2 border-l-2 border-[#D4AF37] shadow-[-5px_0_15px_rgba(0,0,0,0.9)] pointer-events-none" />
 
               {/* Contenu de la couverture */}
-              <div className="relative z-10 flex flex-col items-center justify-center p-8 mt-4 pl-12">
+              <div className="relative z-10 flex flex-col items-center justify-center p-6 md:p-8 mt-2 md:mt-4 pl-10 md:pl-12 w-full h-full">
                 
                 {/* 3D Dragon Relief */}
-                <div className="relative mb-10 transform group-hover:scale-105 transition-transform duration-700">
+                <div className="relative mb-6 md:mb-10 transform group-hover:scale-105 transition-transform duration-700">
                   <GiDragonSpiral 
-                    size={200} 
-                    className="text-[#D4AF37]"
+                    className="text-[#D4AF37] text-[130px] md:text-[200px]"
                     style={{ filter: "drop-shadow(4px 6px 4px rgba(0,0,0,0.9)) brightness(0.9) contrast(1.2)" }} 
                   />
                   {/* Subtle inner glow for metallic effect */}
@@ -185,13 +184,13 @@ export default function Grimoire() {
                 </div>
                 
                 {/* Titles */}
-                <h2 className="font-heading text-5xl md:text-6xl text-[#D4AF37] text-center mb-6 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] tracking-wider uppercase">
+                <h2 className="font-heading text-2xl md:text-6xl text-[#D4AF37] text-center mb-3 md:mb-6 drop-shadow-[0_4px_6px_rgba(0,0,0,0.9)] tracking-wider uppercase">
                   Le Grimoire
                 </h2>
                 
-                <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]"></div>
+                <div className="w-12 md:w-24 h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-6 md:mb-8 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)] mx-auto"></div>
                 
-                <div className="px-8 py-4 border-2 border-[#D4AF37] text-[#D4AF37] font-heading uppercase tracking-[0.2em] text-xs md:text-sm hover:bg-[#D4AF37] hover:text-[#1c130d] transition-all duration-500 shadow-[0_5px_15px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.5)] bg-[#1c130d]/50 backdrop-blur-sm relative overflow-hidden group/btn">
+                <div className="px-5 py-2 md:px-8 md:py-4 border-2 border-[#D4AF37] text-[#D4AF37] font-heading uppercase tracking-[0.2em] text-[9px] md:text-sm hover:bg-[#D4AF37] hover:text-[#1c130d] transition-all duration-500 shadow-[0_5px_15px_rgba(0,0,0,0.6)] group-hover:shadow-[0_0_25px_rgba(212,175,55,0.5)] bg-[#1c130d]/50 backdrop-blur-sm relative overflow-hidden group/btn mx-auto text-center flex items-center justify-center whitespace-nowrap shrink-0">
                   <span className="relative z-10">Ouvrir le Livre</span>
                 </div>
               </div>

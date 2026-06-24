@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useLenis } from 'lenis/react';
 
 /**
  * Composant de navigation principal (Navbar).
@@ -14,48 +15,49 @@ import Image from "next/image";
  */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+  const lenis = useLenis();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Le titre n'est visible que si on est tout en haut de la page (moins de 50px de scroll)
+      setIsAtTop(window.scrollY < 50);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    // Initialisation au montage
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
+      lenis?.stop();
       document.body.style.overflow = "hidden";
     } else {
+      lenis?.start();
       document.body.style.overflow = "unset";
     }
     return () => {
+      lenis?.start();
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, lenis]);
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-8 py-6 mix-blend-difference text-white pointer-events-auto">
-        <Link href="/" className="flex flex-col items-center hover:opacity-80 transition-opacity mt-2">
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, height: 0 }}
-                animate={{ opacity: 1, scale: 1, height: "auto" }}
-                exit={{ opacity: 0, scale: 0.8, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mb-2 overflow-hidden"
-              >
-                <Image 
-                  src="/images/logo.png" 
-                  alt="Logo Les 400 Geeks" 
-                  width={140} 
-                  height={140} 
-                  priority
-                  className="object-contain filter invert" 
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+      <nav className="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-8 py-6 mix-blend-difference text-white pointer-events-none">
+        <Link 
+          href="/" 
+          className={`flex flex-col items-center hover:opacity-80 transition-opacity duration-300 mt-2 pointer-events-auto ${(!isAtTop || isOpen) ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
+        >
           <span className="font-heading text-3xl md:text-4xl tracking-widest uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
             Les 400 Geeks
           </span>
         </Link>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-3 hover:bg-white/10 rounded-full transition-colors focus:outline-none"
+          className="p-3 hover:bg-white/10 rounded-full transition-colors focus:outline-none pointer-events-auto"
         >
           {isOpen ? <X size={32} /> : <Menu size={32} />}
         </button>
@@ -82,8 +84,22 @@ export default function Navbar() {
               <div className="absolute inset-0 bg-white/70" />
             </div>
 
+            {/* Logo centré dans le menu */}
+            <div className="z-10 mb-8 md:mb-12 flex flex-col items-center">
+              <Image 
+                src="/images/logo.png" 
+                alt="Logo Les 400 Geeks" 
+                width={200} 
+                height={200} 
+                className="object-contain mix-blend-multiply mb-2 w-[100px] md:w-[150px]" 
+              />
+              <span className="font-heading text-2xl md:text-5xl tracking-widest uppercase text-black">
+                Les 400 Geeks
+              </span>
+            </div>
+
             {/* Menu Links */}
-            <ul className="z-10 flex flex-col items-center gap-12 font-heading text-5xl md:text-7xl">
+            <ul className="z-10 flex flex-col items-center gap-8 md:gap-12 font-heading text-4xl md:text-7xl">
               <li>
                 <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-[#D4AF37] transition-colors drop-shadow-sm">
                   L'Accueil

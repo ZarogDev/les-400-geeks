@@ -125,10 +125,10 @@ export default function Carte() {
     <div className="flex flex-col md:flex-row min-h-screen bg-[#FAFAFA]">
       {/* Left Side - Scrolling Menu */}
       <div className="w-full md:w-[55%] p-8 md:p-24 lg:px-32 flex flex-col pt-32 relative z-10">
-        <h1 className="font-heading text-5xl md:text-7xl mb-24 text-black border-b pb-8 border-black/10">La Carte</h1>
+        <h1 className="font-heading text-5xl md:text-7xl mb-16 md:mb-24 text-black border-b pb-8 border-black/10">La Carte</h1>
         
-        <div className="flex flex-col space-y-48 pb-64">
-          {menuItems.map((item) => (
+        <div className="flex flex-col space-y-32 md:space-y-48 pb-48 md:pb-64">
+          {menuItems.map((item, index) => (
             <motion.div 
               key={item.id}
               data-id={item.id}
@@ -154,11 +154,13 @@ export default function Carte() {
               <span className="font-heading text-2xl text-black border-t border-black/10 pt-4 mt-2 max-w-[100px]">{item.price}</span>
               
               {/* Mobile Image inline */}
-              <div className="block md:hidden relative w-full h-[300px] mt-8 shadow-xl overflow-hidden rounded-sm group">
+              <div className="block md:hidden relative w-full h-[350px] mt-8 shadow-2xl overflow-hidden rounded-sm group">
                 <Image
                   src={item.image}
                   alt={item.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 0vw"
+                  priority={index < 2}
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -169,37 +171,37 @@ export default function Carte() {
 
       {/* Right Side - Sticky Image Viewer */}
       <div className="w-full md:w-[45%] h-screen sticky top-0 bg-black overflow-hidden hidden md:block shadow-[-10px_0_30px_rgba(0,0,0,0.1)]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeItem.id}
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0"
-          >
-            <div className="absolute inset-0 bg-black/20 z-10" />
-            <Image
-              src={activeItem.image}
-              alt={activeItem.title}
-              fill
-              className="object-cover opacity-90 transition-all duration-1000"
-            />
-            {/* Vignette effect */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,black_100%)] opacity-80 z-10 pointer-events-none" />
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="absolute bottom-24 left-16 right-16 z-20"
+        {menuItems.map((item, index) => {
+          const isActive = activeItem.id === item.id;
+          return (
+            <div 
+              key={item.id} 
+              className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+              style={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? 'auto' : 'none', zIndex: isActive ? 10 : 0 }}
             >
-              <span className="text-[#D4AF37] font-sans tracking-[0.3em] uppercase text-xs mb-2 block">{activeItem.category}</span>
-              <h3 className="font-heading text-5xl text-white drop-shadow-2xl">{activeItem.title}</h3>
-              <div className="w-16 h-[2px] bg-[#D4AF37] mt-6 shadow-[0_0_10px_#D4AF37]" />
-            </motion.div>
-          </motion.div>
-        </AnimatePresence>
+              <div className="absolute inset-0 bg-black/20 z-10" />
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                sizes="50vw"
+                priority={index < 3}
+                quality={85}
+                className="object-cover opacity-90"
+              />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,black_100%)] opacity-80 z-10 pointer-events-none" />
+              
+              <div 
+                className="absolute bottom-24 left-16 right-16 z-20 transition-all duration-1000"
+                style={{ transform: `translateY(${isActive ? 0 : 20}px)`, opacity: isActive ? 1 : 0 }}
+              >
+                <span className="text-[#D4AF37] font-sans tracking-[0.3em] uppercase text-xs mb-2 block">{item.category}</span>
+                <h3 className="font-heading text-5xl text-white drop-shadow-2xl">{item.title}</h3>
+                <div className="w-16 h-[2px] bg-[#D4AF37] mt-6 shadow-[0_0_10px_#D4AF37]" />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

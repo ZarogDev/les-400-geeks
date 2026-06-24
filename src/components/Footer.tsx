@@ -11,7 +11,7 @@ export default function Footer() {
           alt="Les 400 Geeks Logo" 
           width={400} 
           height={400} 
-          className="object-contain mix-blend-multiply" 
+          className="object-contain mix-blend-multiply w-[150px] md:w-[250px] lg:w-[400px]" 
         />
       </Link>
 
