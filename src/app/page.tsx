@@ -1,65 +1,96 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Star } from "lucide-react";
+import { useState } from "react";
+
+import Grimoire from "@/components/Grimoire";
 
 export default function Home() {
+  const [messageSent, setMessageSent] = useState(false);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex flex-col min-h-screen mt-[-88px]">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0 bg-black">
+          <Image
+            src="/images/hero.png"
+            alt="Le Souffle de la Nature"
+            fill
+            className="object-cover opacity-50 scale-105"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+        </div>
+        
+        <div className="relative z-10 text-center text-white flex flex-col items-center max-w-5xl px-4 mt-20">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="font-heading text-6xl md:text-8xl lg:text-9xl tracking-wider mb-6 drop-shadow-2xl bg-gradient-to-r from-[#D4AF37] via-[#FFF1C5] to-[#D4AF37] text-transparent bg-clip-text"
+          >
+            L'Épique à votre Table
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className="font-sans text-lg md:text-2xl text-white/90 mb-12 max-w-2xl font-light tracking-wide"
+          >
+            Quand la haute gastronomie rencontre vos univers virtuels favoris. Une expérience sensorielle inoubliable, subtilement inspirée de la culture vidéoludique.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 1.2 }}
+          >
+            <Link 
+              href="/carte"
+              className="group relative px-8 py-4 border border-[#D4AF37] text-[#D4AF37] hover:text-black overflow-hidden transition-colors duration-500 font-heading tracking-widest uppercase text-sm md:text-base inline-block"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <span className="absolute inset-0 bg-[#D4AF37] transform scale-x-0 origin-left transition-transform duration-500 ease-out group-hover:scale-x-100 z-0"></span>
+              <span className="relative z-10">Découvrir la Carte</span>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+      
+      {/* Concept Section */}
+      <section className="py-32 px-6 md:px-16 lg:px-32 bg-[#FAFAFA] flex flex-col items-center text-center relative z-20">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col items-center"
+        >
+          <h2 className="font-heading text-4xl md:text-5xl text-black mb-8">L'Origine de la Quête</h2>
+          <div className="w-24 h-[1px] bg-[#D4AF37] mb-12"></div>
+          <p className="font-sans text-black/70 text-lg md:text-xl max-w-3xl leading-relaxed mb-8">
+            « Les 400 Geeks » est né d'une idée folle : marier le raffinement des grandes tables étoilées avec la passion débordante pour l'univers du jeu vidéo.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          <p className="font-sans text-black/70 text-lg md:text-xl max-w-3xl leading-relaxed">
+            Ici, chaque plat est un hommage. Pas de cosplay ou de décors en plastique, mais une véritable réinterprétation culinaire de mondes imaginaires. Nos chefs manient le couteau comme d'autres manient la manette, pour vous offrir des plats aussi beaux qu'un chef-d'œuvre graphique en 4K.
+          </p>
+        </motion.div>
+      </section>
+
+      {/* Grimoire Section */}
+      <section className="py-24 px-4 md:px-16 bg-[#FAFAFA] border-t border-black/5 flex flex-col items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="w-full"
+        >
+          <Grimoire />
+        </motion.div>
+      </section>
     </div>
   );
 }
