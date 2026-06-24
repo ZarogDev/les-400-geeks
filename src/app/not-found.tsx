@@ -31,7 +31,7 @@ export default function NotFound() {
           href="/" 
           className="px-10 py-4 bg-black text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-colors duration-500 font-heading uppercase tracking-widest text-sm shadow-xl"
         >
-          Retourner au Village (Accueil)
+          Retour à l'accueil
         </Link>
       </div>
     </div>
