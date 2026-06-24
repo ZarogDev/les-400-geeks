@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Lock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useLenis } from 'lenis/react';
@@ -55,12 +55,21 @@ export default function Navbar() {
             Les 400 Geeks
           </span>
         </Link>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`p-3 hover:bg-white/10 rounded-full transition-all duration-300 focus:outline-none pointer-events-auto ${(!isAtTop && !isOpen) ? 'opacity-0 invisible scale-90' : 'opacity-100 visible scale-100'}`}
-        >
-          {isOpen ? <X size={32} /> : <Menu size={32} />}
-        </button>
+        <div className="flex items-center gap-2">
+          <Link 
+            href="/admin"
+            title="Administration"
+            className={`p-3 text-white hover:text-white/70 hover:bg-white/10 rounded-full transition-all duration-300 focus:outline-none pointer-events-auto ${(!isAtTop && !isOpen) ? 'opacity-0 invisible scale-90' : 'opacity-100 visible scale-100'}`}
+          >
+            <Lock size={24} />
+          </Link>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className={`p-3 hover:bg-white/10 rounded-full transition-all duration-300 focus:outline-none pointer-events-auto ${(!isAtTop && !isOpen) ? 'opacity-0 invisible scale-90' : 'opacity-100 visible scale-100'}`}
+          >
+            {isOpen ? <X size={32} /> : <Menu size={32} />}
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>
