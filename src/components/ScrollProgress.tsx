@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useScroll, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 
-export default function ScrollProgress() {
+function ProgressBar() {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -16,4 +17,19 @@ export default function ScrollProgress() {
       style={{ scaleX }}
     />
   );
+}
+
+export default function ScrollProgress() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  // On attend la fin du Splash Screen (2.8s) pour que le scroll soit débloqué,
+  // AVANT d'exécuter le hook useScroll de Framer Motion.
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 2800);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isVisible) return null;
+
+  return <ProgressBar />;
 }

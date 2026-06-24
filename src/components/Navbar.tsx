@@ -14,25 +14,6 @@ import Image from "next/image";
  */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -46,12 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav 
-        initial={{ y: 0 }}
-        animate={{ y: isVisible ? 0 : "-100%" }}
-        transition={{ duration: 0.3 }}
-        className="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-8 py-6 mix-blend-difference text-white pointer-events-auto"
-      >
+      <nav className="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-8 py-6 mix-blend-difference text-white pointer-events-auto">
         <Link href="/" className="flex flex-col items-center hover:opacity-80 transition-opacity mt-2">
           <AnimatePresence>
             {isOpen && (
@@ -83,7 +59,7 @@ export default function Navbar() {
         >
           {isOpen ? <X size={32} /> : <Menu size={32} />}
         </button>
-      </motion.nav>
+      </nav>
 
       <AnimatePresence>
         {isOpen && (

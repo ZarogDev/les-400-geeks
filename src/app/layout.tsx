@@ -41,26 +41,29 @@ export const metadata: Metadata = {
   },
 };
 
+import SmoothScroll from "@/components/SmoothScroll";
+import SplashScreen from "@/components/SplashScreen";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="fr"
-      suppressHydrationWarning
-      className={`${playfair.variable} ${outfit.variable} h-full antialiased scroll-smooth`}
-    >
+    <html lang="fr" className={`${outfit.variable} ${playfair.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans bg-background text-foreground relative md:cursor-none">
-        <CustomCursor />
-        <ScrollProgress />
-        <Navbar />
-        <main className="flex-1 flex flex-col pt-[88px] relative z-0">
-          {children}
-        </main>
-        <Footer />
-        <BackToTop />
+        <SmoothScroll>
+          <SplashScreen>
+            <CustomCursor />
+            <ScrollProgress />
+            <Navbar />
+            <main className="flex-1 flex flex-col pt-[88px] relative z-0">
+              {children}
+            </main>
+            <Footer />
+            <BackToTop />
+          </SplashScreen>
+        </SmoothScroll>
       </body>
     </html>
   );
