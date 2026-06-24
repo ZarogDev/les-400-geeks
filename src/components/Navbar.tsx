@@ -57,7 +57,7 @@ export default function Navbar() {
         </Link>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-3 hover:bg-white/10 rounded-full transition-colors focus:outline-none pointer-events-auto"
+          className={`p-3 hover:bg-white/10 rounded-full transition-all duration-300 focus:outline-none pointer-events-auto ${(!isAtTop && !isOpen) ? 'opacity-0 invisible scale-90' : 'opacity-100 visible scale-100'}`}
         >
           {isOpen ? <X size={32} /> : <Menu size={32} />}
         </button>
