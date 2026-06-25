@@ -25,18 +25,16 @@ export default function CookieConsent() {
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[9999] p-4 bg-[#0a0a0a] border-t border-white/10 text-white shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 font-sans text-sm">
-      <div className="flex-1 max-w-4xl mx-auto">
-        <p className="opacity-80 leading-relaxed">
-          Nous utilisons des cookies pour assurer le bon fonctionnement du site, mesurer notre audience et améliorer votre expérience. Vous pouvez personnaliser vos choix ou accepter tous les cookies. En savoir plus sur notre <Link href="/politique-confidentialite" className="underline hover:text-white/80 transition-colors">Politique de confidentialité</Link>.
-        </p>
-      </div>
-      <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-        <button onClick={declineAll} className="px-4 py-2 border border-white/20 rounded-md hover:bg-white/5 transition-colors whitespace-nowrap">
-          Tout refuser
+    <div className="fixed bottom-4 left-4 z-[9999] max-w-sm p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl flex flex-col gap-3 font-sans text-xs text-zinc-600 dark:text-zinc-300">
+      <p className="leading-relaxed">
+        Nous utilisons des cookies pour assurer le bon fonctionnement du site et améliorer votre expérience. <Link href="/politique-confidentialite" className="underline font-medium hover:text-zinc-900 dark:hover:text-white transition-colors">En savoir plus</Link>.
+      </p>
+      <div className="flex items-center gap-2 mt-1">
+        <button onClick={acceptAll} className="flex-1 py-2 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-lg hover:opacity-90 transition-opacity font-medium">
+          Accepter
         </button>
-        <button onClick={acceptAll} className="px-4 py-2 bg-white text-black rounded-md hover:bg-gray-200 transition-colors whitespace-nowrap font-medium">
-          Tout accepter
+        <button onClick={declineAll} className="flex-1 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
+          Refuser
         </button>
       </div>
     </div>
