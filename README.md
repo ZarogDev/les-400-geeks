@@ -17,8 +17,8 @@ Une fusion unique entre la haute gastronomie étoilée et la culture vidéoludiq
 - **Styling :** Tailwind CSS 4
 - **Animations :** Framer Motion & Lenis Scroll
 - **Icônes :** Lucide React & React Icons
-- **Backend & BDD :** Prisma ORM avec pilote `@prisma/adapter-pg`
-- **Base de données :** PostgreSQL (hébergé sur Neon)
+- **Backend & BDD :** Prisma 7 ORM avec `@prisma/adapter-neon` (HTTP)
+- **Base de données :** PostgreSQL Neon (eu-central-1) — [les-400-geeks.vercel.app](https://les-400-geeks.vercel.app)
 - **Emails :** Resend API
 
 ## 📦 Installation & Lancement
@@ -30,8 +30,11 @@ Une fusion unique entre la haute gastronomie étoilée et la culture vidéoludiq
    ```
 3. Configurez les variables d'environnement dans un fichier `.env` :
    ```env
-   DATABASE_URL="postgresql://[user]:[password]@[host]:5432/[db]?schema=public"
+   DATABASE_URL="postgresql://...pooler.neon.tech/neondb"
+   DIRECT_URL="postgresql://...neon.tech/neondb"
    ADMIN_PASSWORD="votre_mot_de_passe_securise"
+   RESEND_API_KEY="re_..."          # optionnel, pour les emails réservation
+   RESEND_FROM_EMAIL="..."          # optionnel
    ```
 4. Initialisez la base de données (si ce n'est pas déjà fait) :
    ```bash
@@ -53,4 +56,4 @@ Le design doit toujours rester **épique mais subtil**. Pas de couleurs criardes
 - Des textures subtiles (Bruit, Parchemin, Verre dépoli) et des effets de halo lumineux.
 
 ---
-© 2026 ZarogDev. Agence digitale — design & développement signés ZarogDev. contact@zarogdev.fr
+© 2026 ZarogDev. Agence digitale — design & développement signés ZarogDev. zarogdev@gmail.com
