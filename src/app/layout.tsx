@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   description: "L'épique s'invite à votre table. Découvrez une fusion unique entre la haute gastronomie et la culture vidéoludique. Réservez votre quête dès aujourd'hui.",
   keywords: ["restaurant", "gastronomique", "geek", "gaming", "lyon", "paris", "fine dining", "jeux vidéo"],
   authors: [{ name: "ZarogDev" }],
+  alternates: { canonical: "https://les-400-geeks.vercel.app" },
   openGraph: {
     type: "website",
     locale: "fr_FR",
@@ -32,17 +33,38 @@ export const metadata: Metadata = {
     siteName: "Les 400 Geeks",
     images: [
       {
-        url: "/images/hero.png",
+        url: "https://les-400-geeks.vercel.app/images/hero.png",
         width: 1200,
         height: 630,
-        alt: "Les 400 Geeks",
+        alt: "Les 400 Geeks — Restaurant Gastronomique",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Les 400 Geeks | Restaurant Gastronomique",
+    description: "La haute gastronomie rencontre la culture vidéoludique.",
+    images: ["https://les-400-geeks.vercel.app/images/hero.png"],
   },
 };
 
 import SmoothScroll from "@/components/SmoothScroll";
 import SplashScreen from "@/components/SplashScreen";
+
+const restaurantJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Les 400 Geeks",
+  "description": "Restaurant gastronomique alliant haute cuisine et culture vidéoludique. Chaque plat est un hommage aux univers virtuels.",
+  "url": "https://les-400-geeks.vercel.app",
+  "image": "https://les-400-geeks.vercel.app/images/hero.png",
+  "servesCuisine": ["Gastronomique Française", "Fusion"],
+  "priceRange": "€€€",
+  "inLanguage": "fr",
+  "hasMap": "https://les-400-geeks.vercel.app",
+  "acceptsReservations": "True",
+  "sameAs": ["https://les-400-geeks.vercel.app"]
+};
 
 export default function RootLayout({
   children,
@@ -52,6 +74,10 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${outfit.variable} ${playfair.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans bg-background text-foreground relative md:cursor-none">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd) }}
+        />
         <SmoothScroll>
           <SplashScreen>
             <CustomCursor />

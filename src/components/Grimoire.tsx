@@ -80,10 +80,12 @@ export default function Grimoire() {
         
         <form className="flex flex-col gap-6 text-left" onSubmit={handleSubmitReview}>
           <div className="flex flex-col gap-2">
-            <input required value={author} onChange={(e) => setAuthor(e.target.value)} type="text" className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors font-sans text-black text-lg" placeholder="Nom du Joueur" />
+            <label htmlFor="grimoire-author" className="sr-only">Nom du Joueur</label>
+            <input required id="grimoire-author" value={author} onChange={(e) => setAuthor(e.target.value)} type="text" className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors font-sans text-black text-lg" placeholder="Nom du Joueur" />
           </div>
           <div className="flex flex-col gap-2">
-            <textarea required value={content} onChange={(e) => setContent(e.target.value)} rows={3} className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors resize-none font-sans text-black text-lg" placeholder="Racontez-nous votre aventure..."></textarea>
+            <label htmlFor="grimoire-content" className="sr-only">Votre aventure</label>
+            <textarea required id="grimoire-content" value={content} onChange={(e) => setContent(e.target.value)} rows={3} className="border-b border-black/20 pb-2 bg-transparent focus:outline-none focus:border-[#D4AF37] transition-colors resize-none font-sans text-black text-lg" placeholder="Racontez-nous votre aventure..." />
           </div>
           <button type="submit" disabled={isSubmitting} className="mt-2 bg-black text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black py-3 font-heading uppercase tracking-widest transition-colors duration-500 w-full shadow-lg disabled:opacity-50">
             {isSubmitting ? "Gravure..." : "Signer le Grimoire"}
@@ -251,19 +253,21 @@ export default function Grimoire() {
               {/* Boutons de Navigation (Marque-pages) */}
               {!loading && (
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-8 z-30">
-                  <button 
-                    onClick={prev} 
+                  <button
+                    onClick={prev}
                     disabled={currentPage === 0}
+                    aria-label="Page précédente"
                     className="p-3 bg-white hover:bg-[#D4AF37] hover:text-white rounded-full border border-black/10 text-black disabled:opacity-0 transition-all shadow-lg focus:outline-none"
                   >
-                    <ChevronLeft size={24} />
+                    <ChevronLeft size={24} aria-hidden="true" />
                   </button>
-                  <button 
-                    onClick={next} 
+                  <button
+                    onClick={next}
                     disabled={currentPage === pagesContent.length - 1}
+                    aria-label="Page suivante"
                     className="p-3 bg-white hover:bg-[#D4AF37] hover:text-white rounded-full border border-black/10 text-black disabled:opacity-0 transition-all shadow-lg focus:outline-none"
                   >
-                    <ChevronRight size={24} />
+                    <ChevronRight size={24} aria-hidden="true" />
                   </button>
                 </div>
               )}

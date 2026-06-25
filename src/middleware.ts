@@ -1,20 +1,38 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  const isLoginPage = request.nextUrl.pathname === '/admin/login';
-  const hasSession = request.cookies.has('admin_session');
+const SESSION_KEY = 'les-400-geeks-admin-session';
 
-  // Si on essaie d'accéder à l'admin sans session et qu'on n'est pas sur la page de login
-  if (!hasSession && !isLoginPage) {
+async function computeExpectedToken(password: string): Promise<string> {
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey('raw', enc.encode(password), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+  const sig = await crypto.subtle.sign('HMAC', key, enc.encode(SESSION_KEY));
+  return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+export async function middleware(request: NextRequest) {
+  const isLoginPage = request.nextUrl.pathname === '/admin/login';
+  const sessionToken = request.cookies.get('admin_session')?.value;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  let isValidSession = false;
+  if (sessionToken && adminPassword) {
+    try {
+      const expected = await computeExpectedToken(adminPassword);
+      isValidSession = sessionToken.length === expected.length && sessionToken === expected;
+    } catch {
+      isValidSession = false;
+    }
+  }
+
+  if (!isValidSession && !isLoginPage) {
     if (request.nextUrl.pathname.startsWith('/api/')) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
-  // Si on est connecté et qu'on essaie d'aller sur la page de login
-  if (hasSession && isLoginPage) {
+  if (isValidSession && isLoginPage) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 

@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, '').trim();
+}
+
 export async function GET() {
   try {
     const reviews = await prisma.review.findMany({
@@ -21,11 +25,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
+    const cleanAuthor = stripHtml(String(author)).slice(0, 100);
+    const cleanContent = stripHtml(String(content)).slice(0, 1000);
+    const safeRating = Math.min(5, Math.max(1, Number(rating) || 5));
+
+    if (!cleanAuthor || !cleanContent) {
+      return NextResponse.json({ error: "Invalid content" }, { status: 400 });
+    }
+
     const newReview = await prisma.review.create({
       data: {
-        author,
-        content,
-        rating: rating || 5,
+        author: cleanAuthor,
+        content: cleanContent,
+        rating: safeRating,
       },
     });
 

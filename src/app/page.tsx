@@ -3,14 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star } from "lucide-react";
-import { useState } from "react";
-
 import Grimoire from "@/components/Grimoire";
 
 export default function Home() {
-  const [messageSent, setMessageSent] = useState(false);
-
   return (
     <div className="flex flex-col min-h-screen mt-[-88px]">
       {/* Hero Section */}

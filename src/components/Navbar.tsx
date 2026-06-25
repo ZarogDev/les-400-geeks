@@ -46,7 +46,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-8 py-6 mix-blend-difference text-white pointer-events-none">
+      <nav role="navigation" aria-label="Menu principal" className="fixed top-0 left-0 right-0 z-[60] flex items-start justify-between px-8 py-6 mix-blend-difference text-white pointer-events-none">
         <Link 
           href="/" 
           className={`flex flex-col items-center hover:opacity-80 transition-opacity duration-300 mt-2 pointer-events-auto ${(!isAtTop || isOpen) ? 'opacity-0 invisible' : 'opacity-100 visible'}`}
@@ -56,18 +56,20 @@ export default function Navbar() {
           </span>
         </Link>
         <div className="flex items-center gap-2">
-          <Link 
+          <Link
             href="/admin"
-            title="Administration"
+            aria-label="Administration"
             className={`p-3 text-white hover:text-white/70 hover:bg-white/10 rounded-full transition-all duration-300 focus:outline-none pointer-events-auto ${(!isAtTop && !isOpen) ? 'opacity-0 invisible scale-90' : 'opacity-100 visible scale-100'}`}
           >
-            <Lock size={24} />
+            <Lock size={24} aria-hidden="true" />
           </Link>
           <button
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={isOpen}
             className={`p-3 hover:bg-white/10 rounded-full transition-all duration-300 focus:outline-none pointer-events-auto ${(!isAtTop && !isOpen) ? 'opacity-0 invisible scale-90' : 'opacity-100 visible scale-100'}`}
           >
-            {isOpen ? <X size={32} /> : <Menu size={32} />}
+            {isOpen ? <X size={32} aria-hidden="true" /> : <Menu size={32} aria-hidden="true" />}
           </button>
         </div>
       </nav>
@@ -85,24 +87,25 @@ export default function Navbar() {
             <div className="absolute inset-0 z-0">
               <Image
                 src="/images/navbar_bg.png"
-                alt="Menu Background"
+                alt=""
                 fill
                 className="object-cover opacity-30"
                 priority
+                aria-hidden="true"
               />
               <div className="absolute inset-0 bg-white/70" />
             </div>
 
-            {/* Logo centré dans le menu */}
-            <div className="z-10 mb-8 md:mb-12 flex flex-col items-center">
+            {/* Logo dans le menu */}
+            <div className="z-10 mb-8 flex flex-col items-center md:absolute md:top-6 md:left-8 md:mb-0 md:mt-2">
               <Image 
                 src="/images/logo.png" 
                 alt="Logo Les 400 Geeks" 
                 width={200} 
                 height={200} 
-                className="object-contain mix-blend-multiply mb-2 w-[100px] md:w-[150px]" 
+                className="object-contain mix-blend-multiply mb-2 w-[100px] md:w-[100px]" 
               />
-              <span className="font-heading text-2xl md:text-5xl tracking-widest uppercase text-black">
+              <span className="font-heading text-2xl md:text-4xl tracking-widest uppercase text-black">
                 Les 400 Geeks
               </span>
             </div>

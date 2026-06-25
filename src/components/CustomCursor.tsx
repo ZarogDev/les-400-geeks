@@ -1,63 +1,69 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 export default function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const posRef = useRef({ x: 0, y: 0 });
+  const ringPos = useRef({ x: 0, y: 0 });
+  const isHovering = useRef(false);
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    const onMouseMove = (e: MouseEvent) => {
+      posRef.current = { x: e.clientX, y: e.clientY };
     };
 
-    const handleMouseOver = (e: MouseEvent) => {
+    const onMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // Vérifie si on survole un élément cliquable
-      if (
+      isHovering.current =
         window.getComputedStyle(target).cursor === "pointer" ||
         target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button"
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
+        target.tagName.toLowerCase() === "button";
     };
 
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
+    const animate = () => {
+      const { x, y } = posRef.current;
+      // Dot: suit exactement
+      dot.style.transform = `translate(${x - 4}px, ${y - 4}px) scale(${isHovering.current ? 0 : 1})`;
+      // Ring: lerp pour le retard
+      ringPos.current.x += (x - ringPos.current.x) * 0.15;
+      ringPos.current.y += (y - ringPos.current.y) * 0.15;
+      const scale = isHovering.current ? 1.5 : 1;
+      ring.style.transform = `translate(${ringPos.current.x - 20}px, ${ringPos.current.y - 20}px) scale(${scale})`;
+      ring.style.backgroundColor = isHovering.current ? "rgba(212, 175, 55, 0.1)" : "rgba(212, 175, 55, 0)";
+      rafRef.current = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mouseover", onMouseOver, { passive: true });
+    rafRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseover", onMouseOver);
+      cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
     <>
-      {/* Point central (suit exactement la souris) */}
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 bg-[#D4AF37] rounded-full pointer-events-none z-[100] mix-blend-difference"
-        animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-          scale: isHovering ? 0 : 1,
-        }}
-        transition={{ type: "tween", ease: "backOut", duration: 0.1 }}
+      <div
+        ref={dotRef}
+        aria-hidden="true"
+        className="fixed top-0 left-0 w-2 h-2 bg-[#D4AF37] rounded-full pointer-events-none z-[100] mix-blend-difference will-change-transform"
+        style={{ transition: "transform 0.08s ease-out" }}
       />
-      
-      {/* Anneau extérieur (suit avec un léger retard) */}
-      <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border border-[#D4AF37] rounded-full pointer-events-none z-[100] mix-blend-difference flex items-center justify-center"
-        animate={{
-          x: mousePosition.x - 20,
-          y: mousePosition.y - 20,
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? "rgba(212, 175, 55, 0.1)" : "rgba(212, 175, 55, 0)",
-        }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+      <div
+        ref={ringRef}
+        aria-hidden="true"
+        className="fixed top-0 left-0 w-10 h-10 border border-[#D4AF37] rounded-full pointer-events-none z-[100] mix-blend-difference will-change-transform"
+        style={{ transition: "background-color 0.2s ease" }}
       />
     </>
   );

@@ -67,12 +67,13 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm uppercase tracking-widest text-white/50 mb-3">
+              <label htmlFor="admin-password" className="block text-sm uppercase tracking-widest text-white/50 mb-3">
                 Mot de passe administrateur
               </label>
               <div className="relative">
-                <input 
-                  type="password" 
+                <input
+                  id="admin-password"
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] transition-all placeholder:text-white/20 text-lg tracking-widest"
