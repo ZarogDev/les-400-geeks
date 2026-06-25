@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import CarteClient from "./CarteClient";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "La Carte | Les 400 Geeks",
   description: "Découvrez notre carte gastronomique : entrées, plats, desserts et élixirs inspirés des univers vidéoludiques. Une expérience culinaire épique.",
