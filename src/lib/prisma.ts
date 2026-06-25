@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaNeon } from '@prisma/adapter-neon'
+import { PrismaNeonHttp } from '@prisma/adapter-neon'
 
-const adapter = new PrismaNeon(process.env.DATABASE_URL!)
+const adapter = new PrismaNeonHttp(process.env.DATABASE_URL as string, {})
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
