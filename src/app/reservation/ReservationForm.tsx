@@ -106,7 +106,7 @@ export default function ReservationForm() {
                 <input required id="res-email" type="email" name="email" className="border-b border-white/20 pb-3 bg-transparent text-white text-lg focus:outline-none focus:border-[#D4AF37] transition-colors placeholder-white/30" placeholder="email@exemple.com" />
               </div>
               <div className="flex flex-col gap-3">
-                <label htmlFor="res-size" className="font-heading uppercase tracking-widest text-xs text-[#D4AF37]">Taille de l'Équipe</label>
+                <label htmlFor="res-size" className="font-heading uppercase tracking-widest text-xs text-[#D4AF37]">Taille de l&apos;Équipe</label>
                 <select id="res-size" name="size" required className="border-b border-white/20 pb-3 bg-transparent text-white text-lg focus:outline-none focus:border-[#D4AF37] transition-colors appearance-none cursor-pointer">
                   <option className="bg-[#1c140d]">2 Personnes (Duo)</option>
                   <option className="bg-[#1c140d]">4 Personnes (Escouade)</option>

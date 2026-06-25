@@ -28,7 +28,7 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.2 }}
             className="font-heading text-6xl md:text-8xl lg:text-9xl tracking-wider mb-6 drop-shadow-2xl bg-gradient-to-r from-[#D4AF37] via-[#FFF1C5] to-[#D4AF37] text-transparent bg-clip-text"
           >
-            L'Épique à votre Table
+            L&apos;Épique à votre Table
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -63,13 +63,13 @@ export default function Home() {
           transition={{ duration: 0.8 }}
           className="flex flex-col items-center"
         >
-          <h2 className="font-heading text-4xl md:text-5xl text-black mb-8">L'Origine de la Quête</h2>
+          <h2 className="font-heading text-4xl md:text-5xl text-black mb-8">L&apos;Origine de la Quête</h2>
           <div className="w-24 h-[1px] bg-[#D4AF37] mb-12"></div>
           <p className="font-sans text-black/70 text-lg md:text-xl max-w-3xl leading-relaxed mb-8">
-            « Les 400 Geeks » est né d'une idée folle : marier le raffinement des grandes tables étoilées avec la passion débordante pour l'univers du jeu vidéo.
+            {`« Les 400 Geeks » est né d'une idée folle : marier le raffinement des grandes tables étoilées avec la passion débordante pour l'univers du jeu vidéo.`}
           </p>
           <p className="font-sans text-black/70 text-lg md:text-xl max-w-3xl leading-relaxed">
-            Ici, chaque plat est un hommage. Pas de cosplay ou de décors en plastique, mais une véritable réinterprétation culinaire de mondes imaginaires. Nos chefs manient le couteau comme d'autres manient la manette, pour vous offrir des plats aussi beaux qu'un chef-d'œuvre graphique en 4K.
+            {`Ici, chaque plat est un hommage. Pas de cosplay ou de décors en plastique, mais une véritable réinterprétation culinaire de mondes imaginaires. Nos chefs manient le couteau comme d'autres manient la manette, pour vous offrir des plats aussi beaux qu'un chef-d'œuvre graphique en 4K.`}
           </p>
         </motion.div>
       </section>

@@ -53,7 +53,7 @@ export default function LoginPage() {
         
         {/* Retour au site */}
         <Link href="/" className="absolute top-8 right-8 text-white/50 hover:text-[#D4AF37] transition-colors flex items-center gap-2 text-sm uppercase tracking-widest">
-          Retour à l'accueil <ArrowRight size={16} />
+          Retour à l&apos;accueil <ArrowRight size={16} />
         </Link>
 
         <motion.div 

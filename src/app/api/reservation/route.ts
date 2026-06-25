@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 function escapeHtml(str: string): string {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -30,6 +28,7 @@ export async function POST(req: Request) {
     const safeDate = escapeHtml(String(date).slice(0, 20));
     const safeNotes = notes ? escapeHtml(String(notes).slice(0, 500)) : '';
 
+    const resend = new Resend(process.env.RESEND_API_KEY || 'placeholder');
     const senderEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     const data = await resend.emails.send({
       from: `Les 400 Geeks <${senderEmail}>`,
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ success: true, data });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: "Erreur lors de l'envoi de l'e-mail" }, { status: 500 });
   }
 }

@@ -114,7 +114,7 @@ export default function Navbar() {
             <ul className="z-10 flex flex-col items-center gap-8 md:gap-12 font-heading text-4xl md:text-7xl">
               <li>
                 <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-[#D4AF37] transition-colors drop-shadow-sm">
-                  L'Accueil
+                  L&apos;Accueil
                 </Link>
               </li>
               <li>

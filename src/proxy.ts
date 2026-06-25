@@ -10,7 +10,7 @@ async function computeExpectedToken(password: string): Promise<string> {
   return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
   const sessionToken = request.cookies.get('admin_session')?.value;
   const adminPassword = process.env.ADMIN_PASSWORD;

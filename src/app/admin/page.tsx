@@ -28,10 +28,6 @@ export default function AdminDashboard() {
   const [image, setImage] = useState("");
   const [orderIndex, setOrderIndex] = useState(0);
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
   const fetchItems = async () => {
     setLoading(true);
     try {
@@ -44,6 +40,11 @@ export default function AdminDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchItems();
+  }, []);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -78,7 +79,7 @@ export default function AdminDashboard() {
       }
       resetForm();
       fetchItems();
-    } catch (error) {
+    } catch (_error) {
       alert("Erreur lors de la sauvegarde.");
     }
   };
@@ -88,7 +89,7 @@ export default function AdminDashboard() {
     try {
       await fetch(`/api/admin/menu/${id}`, { method: "DELETE" });
       fetchItems();
-    } catch (error) {
+    } catch (_error) {
       alert("Erreur lors de la suppression.");
     }
   };

@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, Feather, BookOpen } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Feather } from "lucide-react";
 import { GiDragonSpiral } from "react-icons/gi";
 
-/**
- * Composant interactif Grimoire (Livre d'or 3D).
- * Fetch les avis depuis la BDD SQLite et les affiche avec un système de pagination.
- */
+type Review = { id: string; author: string; content: string; rating: number; createdAt: string };
+
 export default function Grimoire() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Formulaire d'avis
@@ -34,6 +32,7 @@ export default function Grimoire() {
 
   useEffect(() => {
     if (isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchReviews();
     }
   }, [isOpen]);
@@ -107,7 +106,7 @@ export default function Grimoire() {
             {[...Array(leftReview.rating || 5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
           </div>
           <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
-            "{leftReview.content}"
+            &quot;{leftReview.content}&quot;
           </p>
           <p className="font-heading font-bold text-black uppercase tracking-widest">— {leftReview.author}</p>
         </div>
@@ -118,7 +117,7 @@ export default function Grimoire() {
             {[...Array(rightReview.rating || 5)].map((_, j) => <Star key={j} fill="currentColor" size={24} />)}
           </div>
           <p className="font-sans italic text-black/80 text-xl md:text-3xl mb-8 leading-relaxed">
-            "{rightReview.content}"
+            &quot;{rightReview.content}&quot;
           </p>
           <p className="font-heading font-bold text-black uppercase tracking-widest">— {rightReview.author}</p>
         </div>

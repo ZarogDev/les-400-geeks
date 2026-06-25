@@ -29,7 +29,7 @@ export default function Footer() {
         </div>
         <p className="text-sm text-black/80 font-sans max-w-lg mx-auto leading-relaxed">
           © 2026 ZarogDev. Agence digitale — design & développement signés ZarogDev.<br/>
-          <a href="mailto:zarogdev@gmail.com" className="hover:text-[#D4AF37] transition-colors mt-2 inline-block">zarogdev@gmail.com</a>
+          <a href="mailto:zarogdev@gmail.com" className="hover:text-[#D4AF37] transition-colors mt-2 inline-block">contact@zarogdev.fr</a>
         </p>
       </div>
     </footer>

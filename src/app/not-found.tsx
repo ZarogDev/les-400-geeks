@@ -24,14 +24,14 @@ export default function NotFound() {
         <div className="w-16 h-[2px] bg-[#D4AF37] mb-8"></div>
         
         <p className="font-sans text-lg md:text-xl text-black/60 mb-12 leading-relaxed italic">
-          Il semblerait que vous ayez pris un mauvais chemin dans le donjon. Cette salle n'existe pas ou a été engloutie par le brouillard.
+          Il semblerait que vous ayez pris un mauvais chemin dans le donjon. Cette salle n&apos;existe pas ou a été engloutie par le brouillard.
         </p>
         
         <Link 
           href="/" 
           className="px-10 py-4 bg-black text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-colors duration-500 font-heading uppercase tracking-widest text-sm shadow-xl"
         >
-          Retour à l'accueil
+          Retour à l&apos;accueil
         </Link>
       </div>
     </div>
