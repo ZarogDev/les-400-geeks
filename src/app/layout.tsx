@@ -1,3 +1,4 @@
+import CookieConsent from '@/components/rgpd/CookieConsent';
 import type { Metadata } from "next";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
@@ -90,6 +91,7 @@ export default function RootLayout({
             <BackToTop />
           </SplashScreen>
         </SmoothScroll>
+        <CookieConsent />
       </body>
     </html>
   );
