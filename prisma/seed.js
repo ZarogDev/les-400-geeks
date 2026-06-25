@@ -1,10 +1,9 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
-const { Pool } = require('pg');
-const { PrismaPg } = require('@prisma/adapter-pg');
+const { PrismaNeonHttp } = require('@prisma/adapter-neon');
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaPg(pool);
+const dbUrl = (process.env.DATABASE_URL ?? '').replace(/^﻿/, '');
+const adapter = new PrismaNeonHttp(dbUrl, {});
 const prisma = new PrismaClient({ adapter });
 
 const menuItems = [

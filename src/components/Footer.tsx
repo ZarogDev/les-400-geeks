@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full py-16 px-6 border-t border-black/5 bg-[#FAFAFA] text-center flex flex-col items-center justify-center gap-12 mt-auto relative z-10">
+    <footer className="w-full py-16 px-6 border-t border-black/20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] bg-[#FAFAFA] text-center flex flex-col items-center justify-center gap-12 mt-auto relative z-10">
       
       <Link href="/" className="hover:scale-105 transition-transform">
         <Image 
@@ -11,7 +11,7 @@ export default function Footer() {
           alt="Les 400 Geeks Logo" 
           width={400} 
           height={400} 
-          className="object-contain mix-blend-multiply w-[150px] md:w-[250px] lg:w-[400px]" 
+          className="object-contain mix-blend-multiply w-[100px] md:w-[150px] lg:w-[200px]" 
         />
       </Link>
 
