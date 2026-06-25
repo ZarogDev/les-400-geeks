@@ -6,36 +6,49 @@ export default function CookieConsent() {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent');
-    if (!consent) {
-      setShow(true);
-    }
+    if (!localStorage.getItem('cookie-consent')) setShow(true);
   }, []);
 
-  const acceptAll = () => {
-    localStorage.setItem('cookie-consent', 'accepted');
-    setShow(false);
-  };
-
-  const declineAll = () => {
-    localStorage.setItem('cookie-consent', 'declined');
-    setShow(false);
-  };
+  const accept = () => { localStorage.setItem('cookie-consent', 'accepted'); setShow(false); };
+  const decline = () => { localStorage.setItem('cookie-consent', 'declined'); setShow(false); };
 
   if (!show) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-[9999] max-w-sm p-5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-2xl flex flex-col gap-3 font-sans text-xs text-zinc-600 dark:text-zinc-300">
-      <p className="leading-relaxed">
-        Nous utilisons des cookies pour assurer le bon fonctionnement du site et améliorer votre expérience. <Link href="/politique-confidentialite" className="underline font-medium hover:text-zinc-900 dark:hover:text-white transition-colors">En savoir plus</Link>.
-      </p>
-      <div className="flex items-center gap-2 mt-1">
-        <button onClick={acceptAll} className="flex-1 py-2 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-lg hover:opacity-90 transition-opacity font-medium">
-          Accepter
-        </button>
-        <button onClick={declineAll} className="flex-1 py-2 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors">
-          Refuser
-        </button>
+    <div
+      role="dialog"
+      aria-label="Consentement cookies"
+      className="fixed bottom-5 right-5 z-[9999] max-w-[300px]"
+    >
+      <div
+        className="p-5 flex flex-col gap-3.5"
+        style={{
+          background: '#e8e8e8',
+          borderTop: '3px solid #D4AF37',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+        }}
+      >
+        <p className="font-sans text-[11.5px] leading-relaxed text-black/60">
+          Cookies pour le bon fonctionnement du site.{' '}
+          <Link href="/politique-confidentialite" className="text-[#D4AF37] underline underline-offset-2 hover:text-[#b8982e] transition-colors">
+            En savoir plus
+          </Link>
+        </p>
+        <div className="flex gap-2">
+          <button
+            onClick={accept}
+            className="flex-1 py-2 font-bold text-[10.5px] uppercase tracking-wider transition-opacity hover:opacity-85"
+            style={{ background: '#D4AF37', color: '#121212' }}
+          >
+            Accepter
+          </button>
+          <button
+            onClick={decline}
+            className="flex-1 py-2 text-[10.5px] uppercase tracking-wider text-black/35 border border-black/15 hover:text-black/60 transition-colors"
+          >
+            Refuser
+          </button>
+        </div>
       </div>
     </div>
   );
