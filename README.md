@@ -1,59 +1,85 @@
-# Les 400 Geeks 🎮🍽️
+# Les 400 Geeks
 
-Une fusion unique entre la haute gastronomie étoilée et la culture vidéoludique. Ce projet est une application web Next.js (App Router) conçue avec un design haut de gamme (Glassmorphism, animations fluides, UI/UX soignée).
+Site vitrine du restaurant "Les 400 Geeks", un concept qui fusionne haute gastronomie et culture vidéoludique (plats inspirés de Portal, Assassin's Creed, Dark Souls, etc.). Le site présente la carte du restaurant, permet aux clients de réserver une table (avec e-mail de confirmation automatique) et de laisser un avis via un "Grimoire" interactif. Un dashboard d'administration protégé permet au gérant de gérer la carte (ajout/édition/suppression des plats) en temps réel sans intervention technique.
 
-## 🚀 Fonctionnalités
+## Stack technique
 
-- **UI/UX Haut de Gamme :** Transitions de pages fluides (Framer Motion), Custom Cursor doré, scroll doux (Lenis), et navbar dynamique.
-- **Le Grimoire Interactif :** Un livre de quêtes en 3D/CSS permettant de lire et laisser des avis, connecté à une base de données.
-- **Carte Gastronomique Dynamique :** Présentation élégante des plats inspirés de jeux vidéos (Portal, Assassin's Creed, Dark Souls, etc.). Les plats sont générés dynamiquement depuis la base de données.
-- **Dashboard Administrateur (/admin) :** Interface sécurisée (protégée par session cookie) permettant l'ajout, l'édition et la suppression des plats de la carte en temps réel.
-- **Réservation Épique :** Formulaire de réservation en Glassmorphism relié à une API d'e-mail (Resend) pour les confirmations.
-- **Optimisation SEO & A11y :** Structure sémantique, page 404 personnalisée, metadata complètes.
+- Framework : Next.js 16.2.9 (App Router, Turbopack)
+- Langage : TypeScript 5
+- ORM : Prisma 7.8.0 (adapters `@prisma/adapter-neon` et `@prisma/adapter-pg`)
+- Base de données : PostgreSQL (Neon), modèles `Review` (avis clients) et `MenuItem` (plats de la carte, images en Base64)
+- Styling : Tailwind CSS 4, composants UI type shadcn (`src/components/ui`), animations Framer Motion, scroll fluide Lenis
+- E-mails transactionnels : Resend (confirmation de réservation)
+- Gestionnaire de paquets : npm (package-lock.json présent)
+- Variables d'environnement requises (voir `.env.example`) :
+  - `DATABASE_URL` — connexion poolée Neon utilisée par le runtime Next.js
+  - `DIRECT_URL` — connexion directe utilisée par le CLI Prisma (migrate, db push, studio)
+  - `ADMIN_PASSWORD` — mot de passe du dashboard admin
+  - `RESEND_API_KEY` — clé API Resend pour l'envoi des e-mails de réservation
+  - `RESEND_FROM_EMAIL` — adresse expéditeur vérifiée dans Resend
 
-## 🛠️ Stack Technique
+## Architecture
 
-- **Framework :** Next.js 16.2 (App Router & Turbopack)
-- **Styling :** Tailwind CSS 4
-- **Animations :** Framer Motion & Lenis Scroll
-- **Icônes :** Lucide React & React Icons
-- **Backend & BDD :** Prisma 7 ORM avec `@prisma/adapter-neon` (HTTP)
-- **Base de données :** PostgreSQL Neon (eu-central-1) — [les-400-geeks.vercel.app](https://les-400-geeks.vercel.app)
-- **Emails :** Resend API
+```
+src/
+├── app/
+│   ├── page.tsx                    # Page d'accueil
+│   ├── carte/                      # Carte gastronomique (plats depuis la BDD)
+│   ├── reservation/                # Formulaire de réservation
+│   ├── admin/                      # Dashboard admin (gestion de la carte)
+│   │   └── login/                  # Authentification admin
+│   ├── cgu/                        # Conditions générales d'utilisation
+│   ├── mentions-legales/           # Mentions légales
+│   ├── politique-confidentialite/  # Politique de confidentialité (RGPD)
+│   ├── api/
+│   │   ├── admin/menu/             # CRUD des plats (protégé, réservé à l'admin)
+│   │   ├── menu/                   # Lecture publique de la carte
+│   │   ├── reservation/            # Réception + envoi e-mail de réservation (Resend)
+│   │   └── reviews/                # Lecture/écriture des avis (Grimoire)
+│   ├── layout.tsx / template.tsx   # Layout global, transitions de page
+│   ├── not-found.tsx               # Page 404 personnalisée
+│   ├── robots.ts / sitemap.ts      # SEO
+│   └── globals.css                 # Styles globaux Tailwind
+├── components/
+│   ├── Navbar.tsx, Footer.tsx      # Navigation et pied de page
+│   ├── Grimoire.tsx                # Livre d'avis interactif
+│   ├── CustomCursor.tsx            # Curseur personnalisé doré
+│   ├── SmoothScroll.tsx, ScrollProgress.tsx  # Scroll fluide (Lenis) + indicateur
+│   ├── SplashScreen.tsx, BackToTop.tsx       # Écran de chargement, retour en haut
+│   ├── rgpd/CookieConsent.tsx      # Bandeau de consentement cookies
+│   └── ui/                         # Composants UI réutilisables (bouton, etc.)
+├── lib/
+│   ├── prisma.ts                   # Client Prisma (adapter Neon/pg)
+│   └── utils.ts                    # Fonctions utilitaires
+├── generated/                      # Client Prisma généré
+└── proxy.ts                        # Proxy applicatif
+prisma/
+├── schema.prisma                   # Modèles Review, MenuItem
+└── seed.js                         # Script de seed initial de la carte
+```
 
-## 📦 Installation & Lancement
+## Auteur
 
-1. Clonez le dépôt GitHub.
-2. Installez les dépendances :
-   ```bash
-   npm install
-   ```
-3. Configurez les variables d'environnement dans un fichier `.env` :
-   ```env
-   DATABASE_URL="postgresql://...pooler.neon.tech/neondb"
-   DIRECT_URL="postgresql://...neon.tech/neondb"
-   ADMIN_PASSWORD="votre_mot_de_passe_securise"
-   RESEND_API_KEY="re_..."          # optionnel, pour les emails réservation
-   RESEND_FROM_EMAIL="..."          # optionnel
-   ```
-4. Initialisez la base de données (si ce n'est pas déjà fait) :
-   ```bash
-   npx prisma generate
-   node prisma/seed.js  # Pour injecter la carte d'origine
-   ```
-5. Lancez le serveur de développement :
-   ```bash
-   npm run dev
-   ```
-   
-Le site sera accessible sur `http://localhost:3000`.
+ZarogDev — 2026
 
-## 🎨 Ligne Directrice Design
+## Démo en ligne
 
-Le design doit toujours rester **épique mais subtil**. Pas de couleurs criardes typiques du "gaming". Nous utilisons :
-- Une palette sombre (Noir `#0a0705`, Marron Cuir, Gris Anthracite).
-- Des accents or/doré (`#D4AF37`) pour le luxe.
-- Des textures subtiles (Bruit, Parchemin, Verre dépoli) et des effets de halo lumineux.
+https://les-400-geeks.vercel.app
 
----
-© 2026 ZarogDev. Agence digitale — design & développement signés ZarogDev. zarogdev@gmail.com
+## Aperçu
+
+![Aperçu de la page d'accueil](docs/screenshot-home.png)
+
+## Scripts npm
+
+- `npm run dev` — lance le serveur de développement (Turbopack)
+- `npm run build` — génère le client Prisma puis build l'application (`prisma generate && next build`)
+- `npm run start` — démarre l'application en mode production
+- `npm run lint` — vérifie le code avec ESLint
+
+### Initialisation de la base de données
+
+```bash
+npx prisma generate
+node prisma/seed.js   # injecte la carte d'origine
+```
