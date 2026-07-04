@@ -57,7 +57,9 @@ export default async function CartePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        // Échappement de "<" : les champs title/description viennent de la BDD (saisie admin),
+        // on évite qu'une valeur contenant "</script>" ne casse le contexte JSON-LD (XSS).
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
       />
       <CarteClient menuItems={menuItems} />
     </>

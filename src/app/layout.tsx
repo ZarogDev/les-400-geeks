@@ -77,7 +77,8 @@ export default function RootLayout({
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans bg-background text-foreground relative md:cursor-none">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd) }}
+          // Échappement de "<" pour empêcher une sortie du contexte <script> (XSS via </script> injection)
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd).replace(/</g, '\\u003c') }}
         />
         <SmoothScroll>
           <SplashScreen>

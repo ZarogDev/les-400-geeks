@@ -1,10 +1,29 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { timingSafeEqual } from "crypto";
 
 const SESSION_KEY = 'les-400-geeks-admin-session';
+
+// Rate limiting best-effort en mémoire (protège contre le brute-force sur ADMIN_PASSWORD).
+// Limite : par instance de process (non partagé multi-instances serverless), mais réduit
+// fortement les attaques automatisées simples. Voir escalade sécurité pour une solution
+// distribuée (ex: Upstash) si le trafic multi-instance devient un problème réel.
+const LOGIN_ATTEMPT_WINDOW_MS = 15 * 60 * 1000;
+const LOGIN_ATTEMPT_MAX = 5;
+const loginAttempts = new Map<string, { count: number; firstAttempt: number }>();
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = loginAttempts.get(ip);
+  if (!entry || now - entry.firstAttempt > LOGIN_ATTEMPT_WINDOW_MS) {
+    loginAttempts.set(ip, { count: 1, firstAttempt: now });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > LOGIN_ATTEMPT_MAX;
+}
 
 function safeCompare(a: string, b: string): boolean {
   const maxLen = Math.max(a.length, b.length, 1);
@@ -23,6 +42,13 @@ async function computeSessionToken(password: string): Promise<string> {
 }
 
 export async function loginAction(password: string) {
+  const headerStore = await headers();
+  const ip = headerStore.get('x-forwarded-for')?.split(',')[0].trim() || headerStore.get('x-real-ip') || 'unknown';
+
+  if (isRateLimited(ip)) {
+    return { error: "Trop de tentatives. Réessayez plus tard." };
+  }
+
   const validPassword = process.env.ADMIN_PASSWORD;
   if (!validPassword) return { error: "Configuration serveur incorrecte." };
 
