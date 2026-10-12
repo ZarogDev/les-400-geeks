@@ -35,7 +35,11 @@ export default function Footer() {
           <Link href="/mentions-legales" className="hover:text-[#D4AF37] transition-colors">Mentions légales</Link>
           <Link href="/politique-confidentialite" className="hover:text-[#D4AF37] transition-colors">Confidentialité</Link>
           <Link href="/cgu" className="hover:text-[#D4AF37] transition-colors">CGU</Link>
+          <Link href="/politique-confidentialite#cookies" className="hover:text-[#D4AF37] transition-colors">Cookies</Link>
         </nav>
+        <p className="text-[11px] text-black/60 font-sans max-w-lg">
+          Site de démonstration : Les 400 Geeks est une marque fictive, aucune réservation réelle n&apos;est effectuée.
+        </p>
       </div>
     </footer>
   );

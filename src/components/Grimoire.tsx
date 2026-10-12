@@ -89,6 +89,10 @@ export default function Grimoire() {
           <button type="submit" disabled={isSubmitting} className="mt-2 bg-black text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black py-3 font-heading uppercase tracking-widest transition-colors duration-500 w-full shadow-lg disabled:opacity-50">
             {isSubmitting ? "Gravure..." : "Signer le Grimoire"}
           </button>
+          <p className="font-sans text-[11px] leading-snug text-black/60">
+            Démonstration : votre nom et votre avis sont publiés immédiatement et visibles de tous (n&apos;indiquez pas votre nom complet). Suppression ou signalement : contact@zarogdev.fr.{" "}
+            <a href="/politique-confidentialite" className="underline">Confidentialité</a> · <a href="/cgu" className="underline">CGU</a>
+          </p>
         </form>
       </div>
     )

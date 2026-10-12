@@ -81,6 +81,7 @@ export default function ReservationForm() {
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
             <h2 className="font-heading text-4xl text-[#D4AF37] mb-6">Quête Acceptée !</h2>
             <p className="text-white/80 text-lg mb-8">Votre table est réservée. Notre guilde vous attend pour une soirée épique.</p>
+            <p className="text-white/50 text-xs mb-8">Démonstration : aucune table n&apos;est réellement réservée.</p>
             <button onClick={() => setSubmitted(false)} className="px-8 py-3 border border-[#D4AF37] text-sm uppercase tracking-widest text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-colors">
               Nouvelle réservation
             </button>
@@ -133,6 +134,12 @@ export default function ReservationForm() {
               <button type="submit" disabled={loading} className="w-full bg-[#D4AF37] text-black hover:bg-white hover:text-black py-5 font-heading text-lg tracking-widest uppercase transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] disabled:opacity-50">
                 {loading ? "Envoi du Corbeau..." : "Confirmer la Réservation"}
               </button>
+              <p className="mt-6 text-xs leading-relaxed text-white/50">
+                Site de démonstration : aucune table n&apos;est réservée. Saisissez uniquement des informations fictives et aucune information de santé réelle.
+                Vos données servent à vous envoyer un e-mail de confirmation de démonstration (via Resend) et ne sont pas enregistrées par le site.
+                Vos droits (accès, effacement…) : contact@zarogdev.fr.{" "}
+                <a href="/politique-confidentialite" className="underline hover:text-[#D4AF37]">Politique de confidentialité</a>
+              </p>
             </div>
           </motion.form>
         )}

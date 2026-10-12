@@ -1,56 +1,114 @@
 import React from 'react';
 
 export const metadata = {
-  title: 'Politique de Confidentialité',
-  description: 'Politique de confidentialité et protection des données',
+  title: 'Politique de confidentialité et cookies',
+  description: 'Politique de confidentialité et de cookies du site de démonstration Les 400 Geeks.',
 };
+
+const h2 = 'text-2xl font-semibold mb-4 text-black dark:text-white';
+const cell = 'border border-black/15 dark:border-white/15 px-3 py-2 align-top';
 
 export default function PolitiqueConfidentialite() {
   return (
     <div className="min-h-screen pt-32 pb-16 px-6 max-w-4xl mx-auto font-sans">
-      <h1 className="text-4xl font-bold mb-12">Politique de Confidentialité</h1>
-      
+      <h1 className="text-4xl font-bold mb-12">Politique de confidentialité et cookies</h1>
+
       <div className="space-y-8 text-black/80 dark:text-white/80">
+        <p className="border border-[#D4AF37]/60 p-4">
+          Les 400 Geeks est un <strong>site de démonstration</strong> réalisé par ZarogDev. Merci de n&apos;y saisir
+          que des informations fictives.
+        </p>
+
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-black dark:text-white">1. Collecte des données personnelles</h2>
-          <p>Nous pouvons recueillir des informations personnelles telles que votre nom, votre adresse e-mail, etc. Ces informations sont collectées lorsque vous utilisez nos formulaires de contact ou nos services en ligne.</p>
+          <h2 className={h2}>1. Responsable du traitement</h2>
+          <p>
+            ZarogDev, Saabri EL HALOUI, EI — adresse : [À COMPLÉTER] — e-mail :{' '}
+            <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a>.
+          </p>
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-black dark:text-white">2. Utilisation des données</h2>
-          <p>Les données collectées sont utilisées uniquement pour :</p>
-          <ul className="list-disc pl-6 mt-2 space-y-1">
-            <li>Vous fournir les services demandés.</li>
-            <li>Répondre à vos demandes de contact.</li>
-            <li>Améliorer l'expérience utilisateur de notre site.</li>
+          <h2 className={h2}>2. Données traitées, finalités et bases légales</h2>
+          <ul className="list-disc pl-6 space-y-3">
+            <li>
+              <strong>Réservation simulée</strong> (nom, e-mail, nombre de personnes, date, demandes particulières) :
+              envoyer l&apos;e-mail de confirmation de démonstration à l&apos;adresse saisie. Ces données ne sont pas
+              enregistrées en base de données. Base légale : intérêt légitime de ZarogDev à présenter son savoir-faire
+              (art. 6.1.f RGPD). N&apos;indiquez aucune information de santé réelle (allergies) : ce sont des données
+              sensibles (art. 9 RGPD).
+            </li>
+            <li>
+              <strong>Avis du Grimoire</strong> (nom ou pseudonyme, texte, note) : publication immédiate et visible de
+              tous. Base légale : intérêt légitime (art. 6.1.f RGPD).
+            </li>
+            <li>
+              <strong>Espace d&apos;administration</strong> (cookie de session) : sécuriser l&apos;accès. Base
+              légale : intérêt légitime (art. 6.1.f RGPD).
+            </li>
+            <li>
+              <strong>Journaux techniques</strong> de l&apos;hébergeur (adresse IP, date, page demandée) : sécurité
+              et bon fonctionnement. Base légale : intérêt légitime (art. 6.1.f RGPD).
+            </li>
           </ul>
+          <p className="mt-4">Aucune donnée n&apos;est vendue, ni utilisée à des fins publicitaires ou de profilage.</p>
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-black dark:text-white">3. Protection des données</h2>
-          <p>Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données personnelles contre l'accès, la modification, la divulgation ou la destruction non autorisés.</p>
+          <h2 className={h2}>3. Durées de conservation</h2>
+          <p>
+            Réservations : non conservées par le site (l&apos;e-mail envoyé reste dans les journaux d&apos;envoi de
+            Resend selon sa politique). Avis : tant qu&apos;ils sont affichés, et au plus 3 ans, ou jusqu&apos;à votre
+            demande de suppression. Journaux de l&apos;hébergeur : selon la politique de Vercel.
+          </p>
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-black dark:text-white">4. Partage des données</h2>
-          <p>Nous ne vendons, n'échangeons ni ne louons vos données personnelles à des tiers. Nous pouvons partager des informations avec des prestataires de services de confiance pour nous aider à exploiter notre site Web ou mener nos affaires, tant que ces parties acceptent de garder ces informations confidentielles.</p>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4 text-black dark:text-white">5. Vos droits (RGPD)</h2>
-          <p>Conformément à la réglementation européenne en vigueur (RGPD), vous disposez des droits suivants concernant vos données personnelles :</p>
-          <ul className="list-disc pl-6 mt-2 space-y-1">
-            <li>Droit d'accès et de rectification.</li>
-            <li>Droit d'effacement de vos données.</li>
-            <li>Droit de retirer votre consentement à tout moment.</li>
+          <h2 className={h2}>4. Destinataires et sous-traitants</h2>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>Vercel Inc. (États-Unis) : hébergement du site.</li>
+            <li>Neon (base de données PostgreSQL, avis et carte) : région d&apos;hébergement [À COMPLÉTER].</li>
+            <li>Resend (États-Unis) : envoi de l&apos;e-mail de confirmation.</li>
           </ul>
-          <p className="mt-4">Pour exercer ces droits, veuillez nous contacter à l'adresse suivante : <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a>.</p>
+          <p className="mt-4">
+            Transferts hors de l&apos;Union européenne : les prestataires américains sont encadrés par le cadre de
+            protection des données UE-États-Unis (Data Privacy Framework) lorsqu&apos;ils y sont certifiés, ou à défaut
+            par les clauses contractuelles types de la Commission européenne.
+          </p>
         </section>
-        
+
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-black dark:text-white">6. Cookies</h2>
-          <p>Notre site utilise des cookies pour améliorer votre expérience. Un bandeau de consentement vous permet d'accepter ou de refuser ces cookies lors de votre première visite.</p>
+          <h2 className={h2}>5. Vos droits</h2>
+          <p>
+            Vous disposez des droits d&apos;accès, de rectification, d&apos;effacement, de limitation,
+            d&apos;opposition et de portabilité, ainsi que du droit de définir des directives sur le sort de vos données
+            après votre décès (art. 15 à 21 RGPD ; art. 85 de la loi Informatique et Libertés). Pour faire supprimer un
+            avis ou exercer vos droits, écrivez à{' '}
+            <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a>. Vous pouvez aussi
+            adresser une réclamation à la CNIL (<a href="https://www.cnil.fr" className="underline">cnil.fr</a>).
+          </p>
         </section>
+
+        <section id="cookies">
+          <h2 className={h2}>6. Cookies et stockage local</h2>
+          <p className="mb-4">
+            Ce site n&apos;utilise <strong>aucun cookie publicitaire ni de mesure d&apos;audience</strong>. Il ne
+            dépose que des traceurs strictement nécessaires, exemptés de consentement (art. 82 de la loi Informatique
+            et Libertés) :
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr><th className={cell}>Nom</th><th className={cell}>Émetteur</th><th className={cell}>Finalité</th><th className={cell}>Durée</th></tr>
+              </thead>
+              <tbody>
+                <tr><td className={cell}>cookie-consent (stockage local)</td><td className={cell}>Les 400 Geeks</td><td className={cell}>Ne plus afficher le bandeau d&apos;information</td><td className={cell}>6 mois</td></tr>
+                <tr><td className={cell}>admin_session (cookie)</td><td className={cell}>Les 400 Geeks</td><td className={cell}>Session de l&apos;espace d&apos;administration uniquement</td><td className={cell}>7 jours</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <p className="text-sm">Dernière mise à jour : 12 octobre 2026.</p>
       </div>
     </div>
   );
