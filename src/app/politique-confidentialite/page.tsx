@@ -22,7 +22,7 @@ export default function PolitiqueConfidentialite() {
         <section>
           <h2 className={h2}>1. Responsable du traitement</h2>
           <p>
-            ZarogDev, Saabri EL HALOUI, EI — adresse : [À COMPLÉTER] — e-mail :{' '}
+            ZarogDev, Saabri EL HALOUI, EI — adresse : 25 rue de Warens, 73000 Chambéry — e-mail :{' '}
             <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a>.
           </p>
         </section>

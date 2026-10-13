@@ -28,9 +28,10 @@ export default function MentionsLegales() {
           <h2 className={h2}>1. Éditeur du site</h2>
           <p>
             <strong>ZarogDev</strong>, Saabri EL HALOUI, entrepreneur individuel (EI), micro-entreprise<br />
-            SIRET : [À COMPLÉTER]<br />
-            Adresse : [À COMPLÉTER]<br />
-            Téléphone : [À COMPLÉTER]<br />
+            Statut : Entreprise individuelle<br />
+            SIREN / SIRET : [À COMPLÉTER, si activité professionnelle déclarée]<br />
+            Adresse : 25 rue de Warens, 73000 Chambéry<br />
+            Téléphone : <a href="tel:+33652268275" className="underline">06 52 26 82 75</a><br />
             E-mail : <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a><br />
             Site : <a href="https://zarogdev.fr" className="underline">zarogdev.fr</a><br />
             TVA non applicable, art. 293 B du CGI.
