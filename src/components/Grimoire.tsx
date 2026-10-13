@@ -91,7 +91,7 @@ export default function Grimoire() {
           </button>
           <p className="font-sans text-[11px] leading-snug text-black/60">
             Démonstration : votre nom et votre avis sont publiés immédiatement et visibles de tous (n&apos;indiquez pas votre nom complet). Suppression ou signalement : contact@zarogdev.fr.{" "}
-            <a href="/politique-confidentialite" className="underline">Confidentialité</a> · <a href="/cgu" className="underline">CGU</a>
+            <a href="/politique-de-confidentialite" className="underline">Confidentialité</a> · <a href="/cgu" className="underline">CGU</a>
           </p>
         </form>
       </div>

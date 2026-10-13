@@ -23,7 +23,7 @@ export default function PolitiqueConfidentialite() {
           <h2 className={h2}>1. Responsable du traitement</h2>
           <p>
             ZarogDev, Saabri EL HALOUI, EI — adresse : 25 rue de Warens, 73000 Chambéry — e-mail :{' '}
-            <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a>.
+            <a href="mailto:zarogdev@gmail.com" className="underline">contact@zarogdev.fr</a>.
           </p>
         </section>
 
@@ -83,7 +83,7 @@ export default function PolitiqueConfidentialite() {
             d&apos;opposition et de portabilité, ainsi que du droit de définir des directives sur le sort de vos données
             après votre décès (art. 15 à 21 RGPD ; art. 85 de la loi Informatique et Libertés). Pour faire supprimer un
             avis ou exercer vos droits, écrivez à{' '}
-            <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a>. Vous pouvez aussi
+            <a href="mailto:zarogdev@gmail.com" className="underline">contact@zarogdev.fr</a>. Vous pouvez aussi
             adresser une réclamation à la CNIL (<a href="https://www.cnil.fr" className="underline">cnil.fr</a>).
           </p>
         </section>

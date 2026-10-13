@@ -51,7 +51,7 @@ export default function CGU() {
           <h2 className={h2}>4. Signalement et recours</h2>
           <p>
             Pour signaler un contenu que vous estimez illicite, écrivez à{' '}
-            <a href="mailto:contact@zarogdev.fr" className="underline">contact@zarogdev.fr</a> en indiquant le contenu
+            <a href="mailto:zarogdev@gmail.com" className="underline">contact@zarogdev.fr</a> en indiquant le contenu
             concerné, les raisons du signalement, vos nom et e-mail, et en déclarant de bonne foi l&apos;exactitude de
             ces informations (règlement (UE) 2022/2065 sur les services numériques, art. 16). Chaque signalement reçoit
             une réponse ; si un contenu est retiré, son auteur peut demander les motifs de la décision et la contester à

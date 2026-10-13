@@ -138,7 +138,7 @@ export default function ReservationForm() {
                 Site de démonstration : aucune table n&apos;est réservée. Saisissez uniquement des informations fictives et aucune information de santé réelle.
                 Vos données servent à vous envoyer un e-mail de confirmation de démonstration (via Resend) et ne sont pas enregistrées par le site.
                 Vos droits (accès, effacement…) : contact@zarogdev.fr.{" "}
-                <a href="/politique-confidentialite" className="underline hover:text-[#D4AF37]">Politique de confidentialité</a>
+                <a href="/politique-de-confidentialite" className="underline hover:text-[#D4AF37]">Politique de confidentialité</a>
               </p>
             </div>
           </motion.form>

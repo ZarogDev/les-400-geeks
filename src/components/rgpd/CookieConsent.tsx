@@ -46,7 +46,7 @@ export default function CookieConsent() {
         <p className="font-sans text-[11.5px] leading-relaxed text-black/70">
           Aucun cookie publicitaire ni de mesure d&apos;audience sur ce site de démonstration : seulement le strict
           nécessaire.{' '}
-          <Link href="/politique-confidentialite#cookies" className="text-[#8a6d12] underline underline-offset-2 hover:text-black transition-colors">
+          <Link href="/politique-de-confidentialite#cookies" className="text-[#8a6d12] underline underline-offset-2 hover:text-black transition-colors">
             En savoir plus
           </Link>
         </p>
