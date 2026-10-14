@@ -10,7 +10,11 @@ async function computeExpectedToken(password: string): Promise<string> {
   return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-export async function proxy(request: NextRequest) {
+function isAdminPath(pathname: string): boolean {
+  return pathname === '/admin' || pathname.startsWith('/admin/') || pathname.startsWith('/api/admin/');
+}
+
+async function adminGuard(request: NextRequest): Promise<NextResponse | null> {
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
   const sessionToken = request.cookies.get('admin_session')?.value;
   const adminPassword = process.env.ADMIN_PASSWORD;
@@ -36,9 +40,51 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 
-  return NextResponse.next();
+  return null;
+}
+
+// Protège /admin et /api/admin, et pose la CSP avec nonce par requête sur toutes les pages.
+export async function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (isAdminPath(pathname)) {
+    const blocked = await adminGuard(request);
+    if (blocked) return blocked;
+  }
+
+  const nonce = btoa(crypto.randomUUID());
+  const isDev = process.env.NODE_ENV !== 'production';
+
+  const csp = [
+    "default-src 'self'",
+    isDev
+      ? `script-src 'self' 'nonce-${nonce}' 'unsafe-eval'`
+      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
+    "img-src 'self' data: blob:",
+    isDev ? "connect-src 'self' ws: wss:" : "connect-src 'self'",
+    "media-src 'self'",
+    "frame-src 'none'",
+    "worker-src 'self'",
+    "manifest-src 'self'",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "object-src 'none'",
+  ].join('; ');
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-nonce', nonce);
+  requestHeaders.set('Content-Security-Policy', csp);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  response.headers.set('Content-Security-Policy', csp);
+  return response;
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|icon.png|images/|.*\.(?:js|css|svg|png|jpg|jpeg|gif|webp|ico|woff2?|map|txt|xml)$).*)',
+  ],
 };

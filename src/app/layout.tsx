@@ -1,5 +1,6 @@
 import CookieConsent from '@/components/rgpd/CookieConsent';
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Playfair_Display, Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
@@ -67,15 +68,19 @@ const restaurantJsonLd = {
   "sameAs": ["https://les-400-geeks.vercel.app"]
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Lecture du nonce CSP posé par src/proxy.ts (force aussi le rendu dynamique, requis pour le nonce).
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html lang="fr" className={`${outfit.variable} ${playfair.variable} h-full antialiased`}>
       <body suppressHydrationWarning className="min-h-full flex flex-col font-sans bg-background text-foreground relative md:cursor-none">
         <script
+          nonce={nonce}
           type="application/ld+json"
           // Échappement de "<" pour empêcher une sortie du contexte <script> (XSS via </script> injection)
           dangerouslySetInnerHTML={{ __html: JSON.stringify(restaurantJsonLd).replace(/</g, '\\u003c') }}
