@@ -79,7 +79,7 @@ export default function AdminDashboard() {
       }
       resetForm();
       fetchItems();
-    } catch (_error) {
+    } catch {
       alert("Erreur lors de la sauvegarde.");
     }
   };
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
     try {
       await fetch(`/api/admin/menu/${id}`, { method: "DELETE" });
       fetchItems();
-    } catch (_error) {
+    } catch {
       alert("Erreur lors de la suppression.");
     }
   };

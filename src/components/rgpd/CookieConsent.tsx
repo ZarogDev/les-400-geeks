@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 
 // Le site ne dépose aucun traceur soumis à consentement (pas d'analytics ni de publicité) :
@@ -7,24 +7,28 @@ import Link from 'next/link';
 const KEY = 'cookie-consent';
 const SIX_MONTHS = 1000 * 60 * 60 * 24 * 182;
 
-export default function CookieConsent() {
-  const [show, setShow] = useState(false);
+// Lecture côté client uniquement (false au rendu serveur et à l'hydratation).
+const subscribe = () => () => {};
+function needsBanner() {
+  let seenAt = 0;
+  try {
+    seenAt = Number(JSON.parse(localStorage.getItem(KEY) ?? '{}').at ?? 0);
+  } catch {
+    seenAt = 0;
+  }
+  return !seenAt || Date.now() - seenAt > SIX_MONTHS;
+}
 
-  useEffect(() => {
-    let seenAt = 0;
-    try {
-      seenAt = Number(JSON.parse(localStorage.getItem(KEY) ?? '{}').at ?? 0);
-    } catch {
-      seenAt = 0;
-    }
-    if (!seenAt || Date.now() - seenAt > SIX_MONTHS) setShow(true);
-  }, []);
+export default function CookieConsent() {
+  const shouldShow = useSyncExternalStore(subscribe, needsBanner, () => false);
+  const [dismissed, setDismissed] = useState(false);
+  const show = shouldShow && !dismissed;
 
   const close = () => {
     try {
       localStorage.setItem(KEY, JSON.stringify({ value: 'informed', at: Date.now() }));
     } catch {}
-    setShow(false);
+    setDismissed(true);
   };
 
   if (!show) return null;
