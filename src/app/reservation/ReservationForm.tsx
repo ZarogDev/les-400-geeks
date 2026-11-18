@@ -21,6 +21,7 @@ export default function ReservationForm() {
       size: formData.get("size"),
       date: formData.get("date"),
       notes: formData.get("notes"),
+      website: formData.get("website"),
     };
 
     try {
@@ -96,6 +97,10 @@ export default function ReservationForm() {
           >
             <div className="absolute top-0 left-10 right-10 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent" />
             <div className="absolute bottom-0 left-10 right-10 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent" />
+            <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+              <label htmlFor="res-website">Ne pas remplir</label>
+              <input id="res-website" type="text" name="website" tabIndex={-1} autoComplete="off" />
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
               <div className="flex flex-col gap-3">
