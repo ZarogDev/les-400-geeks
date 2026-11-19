@@ -10,10 +10,49 @@ function escapeHtml(str: string): string {
     .replace(/'/g, '&#x27;');
 }
 
+// Limites en mémoire, best-effort (par instance, comme pour la connexion admin) :
+// par IP, et plafond global par jour pour borner les envois depuis le domaine d'expédition.
+const WINDOW_MS = 15 * 60 * 1000;
+const MAX_PER_IP = 3;
+const MAX_PER_DAY = 100;
+const attempts = new Map<string, { count: number; first: number }>();
+let day = { key: "", count: 0 };
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const today = new Date(now).toISOString().slice(0, 10);
+  if (day.key !== today) day = { key: today, count: 0 };
+  if (day.count >= MAX_PER_DAY) return true;
+  const entry = attempts.get(ip);
+  if (!entry || now - entry.first > WINDOW_MS) {
+    if (attempts.size > 5000) attempts.clear();
+    attempts.set(ip, { count: 1, first: now });
+    day.count += 1;
+    return false;
+  }
+  entry.count += 1;
+  if (entry.count > MAX_PER_IP) return true;
+  day.count += 1;
+  return false;
+}
+
 export async function POST(req: Request) {
   try {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json({ error: "Trop de demandes. Réessayez plus tard." }, { status: 429 });
+    }
+
     const body = await req.json();
-    const { name, email, size, date, notes } = body;
+    const { name, email, size, date, notes, website } = body;
+
+    // Champ piège : invisible pour un humain, rempli par les robots. Réponse factice, aucun envoi.
+    if (typeof website === "string" && website.trim() !== "") {
+      return NextResponse.json({ success: true });
+    }
 
     if (!name || !email || !date) {
       return NextResponse.json({ error: "Champs obligatoires manquants" }, { status: 400 });
@@ -30,7 +69,7 @@ export async function POST(req: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY || 'placeholder');
     const senderEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
-    const data = await resend.emails.send({
+    await resend.emails.send({
       from: `Les 400 Geeks <${senderEmail}>`,
       to: [email],
       subject: "Votre Quête est confirmée - Les 400 Geeks",
@@ -54,7 +93,7 @@ export async function POST(req: Request) {
       `,
     });
 
-    return NextResponse.json({ success: true, data });
+    return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Erreur lors de l'envoi de l'e-mail" }, { status: 500 });
   }
